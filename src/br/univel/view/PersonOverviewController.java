@@ -1,11 +1,12 @@
 package br.univel.view;
 
+import br.univel.MainApp;
+import br.univel.model.Person;
+import br.univel.util.DateUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import br.univel.MainApp;
-import br.univel.model.Person;
 
 public class PersonOverviewController {
     @FXML
@@ -75,8 +76,8 @@ public class PersonOverviewController {
             streetLabel.setText(person.getStreet());
             postalCodeLabel.setText(Integer.toString(person.getPostalCode()));
             cityLabel.setText(person.getCity());
+            birthdayLabel.setText(DateUtil.format(person.getBirthday()));
 
-            // TODO: Nós precisamos de uma maneira de converter o aniversário em um String!
             // birthdayLabel.setText(...);
         } else {
             // Person é null, remove todo o texto.
