@@ -5,9 +5,10 @@
 			<filelist>
 				<file name="${java.home}\..\lib\ant-javafx.jar"/>
 				<file name="${java.home}\lib\jfxrt.jar"/>
+				<file name="${basedir}"/>
 			</filelist>
 		</path>
-	
+
 		<taskdef resource="com/sun/javafx/tools/ant/antlib.xml"
 			uri="javafx:com.sun.javafx.tools.ant"
 			classpathref="fxant"/>
@@ -16,22 +17,22 @@
 		<delete dir="externalLibs" />
 		<delete dir="project" />
 		<delete dir="projectRefs" />
-	
+
 		<mkdir dir="externalLibs" />
-	
+
 		<copy todir="externalLibs">
 			<fileset dir="C:\Users\Eduardo\workspace\TutorialFX\lib">
 				<filename name="controlsfx-8.0.6_20.jar"/>
 			</fileset>
 		</copy>
-	
+
 		<mkdir dir="project" />
 		<copy todir="project">
 			<fileset dir="C:\Users\Eduardo\workspace\TutorialFX">
 				<include name="src/**" />
 			</fileset>
 		</copy>
-	
+
 		<mkdir dir="projectRefs" />
 	</target>
 	<target name='do-compile'>
@@ -39,23 +40,23 @@
 		<mkdir dir="build/src" />
 		<mkdir dir="build/libs" />
 		<mkdir dir="build/classes" />
-	
+
 		<!-- Copy project-libs references -->
 		<copy todir="build/libs">
 			<fileset dir="externalLibs">
 				<include name="controlsfx-8.0.6_20.jar"/>
 			</fileset>
 		</copy>
-	
+
 		<!-- Copy project references -->
-	
+
 		<!-- Copy project sources itself -->
 		<copy todir="build/src">
 			<fileset dir="project/src">
 				<include name="**/*"/>
 			</fileset>
 		</copy>
-	
+
 		<javac includeantruntime="false" source="1.8" target="1.8" srcdir="build/src" destdir="build/classes" encoding="Cp1252">
 			<classpath>
 				<fileset dir="build/libs">
@@ -63,50 +64,52 @@
 				</fileset>
 			</classpath>
 		</javac>
-	
+
 		<!-- Copy over none Java-Files -->
 		<copy todir="build/classes">
 		<fileset dir="project/src">
 			<exclude name="**/*.java"/>
 		</fileset>
 		</copy>
-	
-	
+
+
 	</target>
 	<target name="do-deploy" depends="setup-staging-area, do-compile, init-fx-tasks">
 		<delete file="dist"/>
 		<delete file="deploy" />
-	
+
 		<mkdir dir="dist" />
 		<mkdir dir="dist/libs" />
-	
+
 		<copy todir="dist/libs">
 			<fileset dir="externalLibs">
 				<include name="*" />
 			</fileset>
 		</copy>
-	
-	
+
+
 		<fx:resources id="appRes">
 			<fx:fileset dir="dist" includes="TutorialFX.jar"/>
 			<fx:fileset dir="dist" includes="libs/*"/>
+		    <fx:fileset dir="dist" includes="resources/**"/>
 		</fx:resources>
-	
+
 		<fx:application id="fxApplication"
 			name="AdressApp"
 			mainClass="br.univel.MainApp"
+			version="1.0"
 		/>
-	
+
 		<mkdir dir="build/classes/META-INF" />
-	
-	
-	
+
+
+
 		<fx:jar destfile="dist/TutorialFX.jar">
 			<fx:application refid="fxApplication"/>
 			<fileset dir="build/classes">
 			</fileset>
 			<fx:resources refid="appRes"/>
-	
+
 			<manifest>
 				<attribute name="Implementation-Vendor" value="univel.br"/>
 				<attribute name="Implementation-Title" value="AdressApp"/>
@@ -114,8 +117,8 @@
 				<attribute name="JavaFX-Feature-Proxy" value="None"/>
 			</manifest>
 		</fx:jar>
-	
-	
+
+
 		<mkdir dir="deploy" />
 		<!-- Need to use ${basedir} because somehow the ant task is calculating the directory differently -->
 		<fx:deploy
@@ -126,14 +129,14 @@
 			outdir="${basedir}/deploy"
 			outfile="TutorialFX" nativeBundles="exe"
 			updatemode="background" >
-	
+
 			<fx:platform basedir="${java.home}"/>
 			<fx:info title="TutorialFX" vendor="univel.br"/>
-	
+
 			<fx:application refId="fxApplication"/>
 			<fx:resources refid="appRes"/>
 		</fx:deploy>
-	
-	
+
+
 	</target>
 </project>
