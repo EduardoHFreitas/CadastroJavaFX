@@ -123,7 +123,7 @@ public class MainApp extends Application {
         try {
             // Carrega o arquivo fxml e cria um novo stage para a janela popup.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("view/PersonEditDialog.fxml"));
+            loader.setLocation(MainApp.class.getResource("view/PersonEdit.fxml"));
             AnchorPane page = (AnchorPane) loader.load();
 
             // Cria o palco dialogStage.
