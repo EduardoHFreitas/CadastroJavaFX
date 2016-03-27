@@ -2,6 +2,9 @@ package br.univel.model;
 
 import java.time.LocalDate;
 
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import br.univel.util.LocalDateAdapter;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -17,7 +20,7 @@ import javafx.beans.property.StringProperty;
 public class Person {
 
     private final StringProperty firstName;
-    
+
     private final StringProperty lastName;
     private final StringProperty street;
     private final IntegerProperty postalCode;
@@ -108,6 +111,7 @@ public class Person {
         return city;
     }
 
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     public LocalDate getBirthday() {
         return birthday.get();
     }
